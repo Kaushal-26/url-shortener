@@ -3,6 +3,9 @@ package io.github.kaushal_26.url_shortener.controller;
 import io.github.kaushal_26.url_shortener.dto.CreateShortUrlRequest;
 import io.github.kaushal_26.url_shortener.dto.ShortUrlRequest;
 import io.github.kaushal_26.url_shortener.dto.UpdateShortUrlRequest;
+import io.github.kaushal_26.url_shortener.response.GetAccessCountResponse;
+import io.github.kaushal_26.url_shortener.response.GetLastAccessedResponse;
+import io.github.kaushal_26.url_shortener.response.ShortUrlResponse;
 import io.github.kaushal_26.url_shortener.service.UrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +26,15 @@ public class UrlController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createShortUrl(@RequestBody CreateShortUrlRequest payload) {
+    public ResponseEntity<ShortUrlResponse> createShortUrl(@RequestBody CreateShortUrlRequest payload) {
         log.info("Creating short URL for: {}", payload.getOriginalUrl());
-        return new ResponseEntity<>(
-                urlService.createShortUrl(payload.getOriginalUrl()).getShortUrl(),
-                HttpStatus.CREATED
-        );
+        return new ResponseEntity<>(urlService.createShortUrl(payload.getOriginalUrl()), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateShortUrl(@RequestBody UpdateShortUrlRequest payload) {
+    public ResponseEntity<ShortUrlResponse> updateShortUrl(@RequestBody UpdateShortUrlRequest payload) {
         log.info("Updating short URL: {} to new original URL: {}", payload.getShortUrl(), payload.getNewOriginalUrl());
-        return new ResponseEntity<>(
-                urlService.updateShortUrl(payload.getShortUrl(), payload.getNewOriginalUrl()).getShortUrl(),
-                HttpStatus.OK
-        );
+        return ResponseEntity.ok(urlService.updateShortUrl(payload.getShortUrl(), payload.getNewOriginalUrl()));
     }
 
     @DeleteMapping
@@ -48,15 +45,15 @@ public class UrlController {
     }
 
     @GetMapping("/access-count")
-    public ResponseEntity<Long> getAccessCount(@RequestBody ShortUrlRequest payload) {
+    public ResponseEntity<GetAccessCountResponse> getAccessCount(@RequestBody ShortUrlRequest payload) {
         log.info("Getting access count for short URL: {}", payload.getShortUrl());
-        return new ResponseEntity<>(urlService.getAccessCount(payload.getShortUrl()), HttpStatus.OK);
+        return ResponseEntity.ok(urlService.getAccessCount(payload.getShortUrl()));
     }
 
     @GetMapping("/last-accessed")
-    public ResponseEntity<String> getLastAccessedAt(@RequestBody ShortUrlRequest payload) {
+    public ResponseEntity<GetLastAccessedResponse> getLastAccessedAt(@RequestBody ShortUrlRequest payload) {
         log.info("Getting last accessed time for short URL: {}", payload.getShortUrl());
-        return new ResponseEntity<>(urlService.getLastAccessedAt(payload.getShortUrl()).toString(), HttpStatus.OK);
+        return ResponseEntity.ok(urlService.getLastAccessedAt(payload.getShortUrl()));
     }
 
 }
