@@ -20,7 +20,7 @@ public class UrlService {
     }
 
     private Url getUrl(String shortUrl) {
-        return urlRepository.findByShortUrlAndDeletedAtIsNull(shortUrl)
+        return urlRepository.find(shortUrl)
                 .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
     }
 
@@ -40,17 +40,13 @@ public class UrlService {
     }
 
     public Url updateShortUrl(String shortUrl, String newOriginalUrl) {
-        Url url = this.getUrl(shortUrl);
-        url.setOriginalUrl(newOriginalUrl);
-        url.setAccessCount(0);
-        url.setLastAccessedAt(null);
-        return urlRepository.insert(url);
+        return urlRepository.update(shortUrl, newOriginalUrl)
+                .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
     }
 
     public void deleteShortUrl(String shortUrl) {
-        Url url = this.getUrl(shortUrl);
-        url.setDeletedAt(Instant.now());
-        urlRepository.delete(url);
+        urlRepository.delete(shortUrl)
+                .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
     }
 
 }
