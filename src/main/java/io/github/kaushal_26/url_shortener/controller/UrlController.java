@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/urls")
 @Slf4j
 public class UrlController {
+    private final UrlService urlService;
+
     @Autowired
-    private UrlService urlService;
+    public UrlController(UrlService urlService) {
+        this.urlService = urlService;
+    }
 
     @PostMapping
     public ResponseEntity<String> createShortUrl(@RequestParam String originalUrl) {

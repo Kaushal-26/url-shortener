@@ -11,8 +11,12 @@ import java.time.Instant;
 @Service
 @Slf4j
 public class UrlService {
+    private final UrlRepository urlRepository;
+
     @Autowired
-    private UrlRepository urlRepository;
+    public UrlService(UrlRepository urlRepository) {
+        this.urlRepository = urlRepository;
+    }
 
     private Url getUrl(String shortUrl) {
         return urlRepository.findByShortUrlAndDeletedAtIsNull(shortUrl)
