@@ -3,9 +3,7 @@ package io.github.kaushal_26.url_shortener.controller;
 import io.github.kaushal_26.url_shortener.dto.CreateShortUrlRequest;
 import io.github.kaushal_26.url_shortener.dto.ShortUrlRequest;
 import io.github.kaushal_26.url_shortener.dto.UpdateShortUrlRequest;
-import io.github.kaushal_26.url_shortener.response.GetAccessCountResponse;
-import io.github.kaushal_26.url_shortener.response.GetLastAccessedResponse;
-import io.github.kaushal_26.url_shortener.response.ShortUrlResponse;
+import io.github.kaushal_26.url_shortener.response.*;
 import io.github.kaushal_26.url_shortener.service.UrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +52,18 @@ public class UrlController {
     public ResponseEntity<GetLastAccessedResponse> getLastAccessedAt(@RequestBody ShortUrlRequest payload) {
         log.info("Getting last accessed time for short URL: {}", payload.getShortUrl());
         return ResponseEntity.ok(urlService.getLastAccessedAt(payload.getShortUrl()));
+    }
+
+    @GetMapping("/access-details")
+    public ResponseEntity<GetAccessDetailsResponse> getAccessDetails(@RequestBody ShortUrlRequest payload) {
+        log.info("Getting access details for short URL: {}", payload.getShortUrl());
+        return ResponseEntity.ok(urlService.getAccessDetails(payload.getShortUrl()));
+    }
+
+    @GetMapping("/{shortUrl}")
+    public ResponseEntity<GetOriginalUrlResponse> getOriginalUrl(@PathVariable String shortUrl) {
+        log.info("Getting original URL for: {}", shortUrl);
+        return ResponseEntity.ok(urlService.getOriginalUrl(shortUrl));
     }
 
 }

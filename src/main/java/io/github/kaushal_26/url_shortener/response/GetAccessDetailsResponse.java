@@ -14,7 +14,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GetLastAccessedResponse {
+public class GetAccessDetailsResponse {
+
+    private long accessCount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMM dd, yyyy 'at' hh:mm a 'UTC'", timezone = "UTC")
     private Instant lastAccessedAt;

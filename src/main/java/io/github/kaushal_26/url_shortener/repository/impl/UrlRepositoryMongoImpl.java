@@ -60,4 +60,16 @@ public class UrlRepositoryMongoImpl implements UrlRepository {
         return Optional.ofNullable(mongoTemplate.findAndModify(query, update, Url.class));
     }
 
+    @Override
+    public Url updateAccessedDetails(String shortUrl, long accessCount) {
+        Query query = new Query(Criteria.where("shortUrl").is(shortUrl).and("deletedAt").is(null));
+
+        // Document exists, proceed with delete
+        Update update = Update.update("accessCount", accessCount + 1)
+                .set("lastAccessedAt", Instant.now())
+                .set("updatedAt", Instant.now());
+
+        return mongoTemplate.findAndModify(query, update, FindAndModifyOptions.options().returnNew(true), Url.class);
+    }
+
 }

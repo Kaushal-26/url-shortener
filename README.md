@@ -1,2 +1,1 @@
-# URL-Shortener
-Scalable URL Shortener
+# Scalable URL Shortener

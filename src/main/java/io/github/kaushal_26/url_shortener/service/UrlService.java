@@ -2,9 +2,7 @@ package io.github.kaushal_26.url_shortener.service;
 
 import io.github.kaushal_26.url_shortener.model.Url;
 import io.github.kaushal_26.url_shortener.repository.UrlRepository;
-import io.github.kaushal_26.url_shortener.response.GetAccessCountResponse;
-import io.github.kaushal_26.url_shortener.response.GetLastAccessedResponse;
-import io.github.kaushal_26.url_shortener.response.ShortUrlResponse;
+import io.github.kaushal_26.url_shortener.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,15 @@ public class UrlService {
     private Url getUrl(String shortUrl) {
         return urlRepository.find(shortUrl)
                 .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
+    }
+
+    public GetOriginalUrlResponse getOriginalUrl(String shortUrl) {
+        Url url = this.getUrl(shortUrl);
+
+        // Update the access count and last accessed time
+        this.updateAccessedDetails(shortUrl, url.getAccessCount());
+
+        return GetOriginalUrlResponse.builder().originalUrl(url.getOriginalUrl()).build();
     }
 
     public GetAccessCountResponse getAccessCount(String shortUrl) {
@@ -55,6 +62,21 @@ public class UrlService {
         urlRepository.delete(shortUrl)
                 .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
         log.info("Deleted short URL: {}", shortUrl);
+    }
+
+    public GetAccessDetailsResponse getAccessDetails(String shortUrl) {
+        Url url = this.getUrl(shortUrl);
+        log.info("Access details for short URL {}: Access Count: {}, Last Accessed At: {}",
+                shortUrl, url.getAccessCount(), url.getLastAccessedAt());
+        return GetAccessDetailsResponse.builder()
+                .accessCount(url.getAccessCount()).lastAccessedAt(url.getLastAccessedAt())
+                .build();
+    }
+
+    private void updateAccessedDetails(String shortUrl, long accessCount) {
+        Url url = urlRepository.updateAccessedDetails(shortUrl, accessCount);
+        log.info("Updated access count: {} and last accessed time: {} for short URL: {}",
+                url.getAccessCount(), url.getLastAccessedAt(), shortUrl);
     }
 
 }

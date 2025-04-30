@@ -14,4 +14,6 @@ public interface UrlRepository {
 
     Optional<Url> delete(String shortUrl);
 
+    Url updateAccessedDetails(String shortUrl, long accessCount);
+
 }
