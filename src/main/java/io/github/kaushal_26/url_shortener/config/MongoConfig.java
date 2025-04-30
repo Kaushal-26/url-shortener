@@ -1,4 +1,4 @@
-package io.github.kaushal26.urlshortener.config;
+package io.github.kaushal_26.url_shortener.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;

@@ -1,6 +1,6 @@
-package io.github.kaushal26.urlshortener.controller;
+package io.github.kaushal_26.url_shortener.controller;
 
-import io.github.kaushal26.urlshortener.service.UrlService;
+import io.github.kaushal_26.url_shortener.service.UrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

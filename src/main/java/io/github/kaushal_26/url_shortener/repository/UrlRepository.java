@@ -1,6 +1,6 @@
-package io.github.kaushal26.urlshortener.repository;
+package io.github.kaushal_26.url_shortener.repository;
 
-import io.github.kaushal26.urlshortener.model.Url;
+import io.github.kaushal_26.url_shortener.model.Url;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

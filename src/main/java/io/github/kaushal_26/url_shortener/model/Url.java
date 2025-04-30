@@ -1,4 +1,4 @@
-package io.github.kaushal26.urlshortener.model;
+package io.github.kaushal_26.url_shortener.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
