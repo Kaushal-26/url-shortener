@@ -11,6 +11,7 @@ import java.time.Instant;
 @Service
 @Slf4j
 public class UrlService {
+
     private final UrlRepository urlRepository;
 
     @Autowired
@@ -43,7 +44,7 @@ public class UrlService {
         url.setOriginalUrl(newOriginalUrl);
         url.setAccessCount(0);
         url.setLastAccessedAt(null);
-        return urlRepository.save(url);
+        return urlRepository.insert(url);
     }
 
     public void deleteShortUrl(String shortUrl) {
@@ -51,4 +52,5 @@ public class UrlService {
         url.setDeletedAt(Instant.now());
         urlRepository.delete(url);
     }
+
 }

@@ -18,6 +18,7 @@ import java.time.Instant;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "urls")
 public class Url {
+
     // The original URL that the user wants to shorten
     private String originalUrl;
     // The shortened code that will be used to access the original URL
@@ -35,4 +36,5 @@ public class Url {
     private Instant updatedAt;
 
     private Instant deletedAt;
+
 }
