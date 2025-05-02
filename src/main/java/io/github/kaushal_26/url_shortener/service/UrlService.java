@@ -1,5 +1,6 @@
 package io.github.kaushal_26.url_shortener.service;
 
+import io.github.kaushal_26.url_shortener.exception.UrlNotFoundException;
 import io.github.kaushal_26.url_shortener.model.Url;
 import io.github.kaushal_26.url_shortener.repository.UrlRepository;
 import io.github.kaushal_26.url_shortener.response.*;
@@ -19,16 +20,13 @@ public class UrlService {
     }
 
     private Url getUrl(String shortUrl) {
-        return urlRepository.find(shortUrl)
-                .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
+        return urlRepository.find(shortUrl).orElseThrow(() -> new UrlNotFoundException(shortUrl));
     }
 
     public GetOriginalUrlResponse getOriginalUrl(String shortUrl) {
         Url url = this.getUrl(shortUrl);
-
         // Update the access count and last accessed time
         this.updateAccessedDetails(shortUrl, url.getAccessCount());
-
         return GetOriginalUrlResponse.builder().originalUrl(url.getOriginalUrl()).build();
     }
 
@@ -52,15 +50,13 @@ public class UrlService {
     }
 
     public ShortUrlResponse updateShortUrl(String shortUrl, String newOriginalUrl) {
-        Url url = urlRepository.update(shortUrl, newOriginalUrl)
-                .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
+        Url url = urlRepository.update(shortUrl, newOriginalUrl).orElseThrow(() -> new UrlNotFoundException(shortUrl));
         log.info("Updated short URL: {} to new original URL: {}", shortUrl, newOriginalUrl);
         return ShortUrlResponse.builder().shortUrl(url.getShortUrl()).build();
     }
 
     public void deleteShortUrl(String shortUrl) {
-        urlRepository.delete(shortUrl)
-                .orElseThrow(() -> new RuntimeException("URL not found for shortUrl: " + shortUrl));
+        urlRepository.delete(shortUrl).orElseThrow(() -> new UrlNotFoundException(shortUrl));
         log.info("Deleted short URL: {}", shortUrl);
     }
 
