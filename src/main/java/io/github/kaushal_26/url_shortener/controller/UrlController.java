@@ -60,10 +60,10 @@ public class UrlController {
         return ResponseEntity.ok(urlService.getAccessDetails(payload.getShortUrl()));
     }
 
-    @GetMapping("/{shortUrl}")
-    public ResponseEntity<GetOriginalUrlResponse> getOriginalUrl(@PathVariable String shortUrl) {
-        log.info("Getting original URL for: {}", shortUrl);
-        return ResponseEntity.ok(urlService.getOriginalUrl(shortUrl));
+    @GetMapping("/{code}")
+    public ResponseEntity<GetOriginalUrlResponse> getOriginalUrl(@PathVariable String code) {
+        log.info("Getting original URL for: {}", code);
+        return ResponseEntity.ok(urlService.getOriginalUrl(code));
     }
 
 }

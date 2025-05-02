@@ -24,8 +24,8 @@ public class UrlRepositoryMongoImpl implements UrlRepository {
     }
 
     @Override
-    public Optional<Url> find(String shortUrl) {
-        Query query = new Query(Criteria.where("shortUrl").is(shortUrl).and("deletedAt").is(null));
+    public Optional<Url> find(String code) {
+        Query query = new Query(Criteria.where("code").is(code).and("deletedAt").is(null));
         return Optional.ofNullable(mongoTemplate.findOne(query, Url.class));
     }
 
@@ -35,8 +35,8 @@ public class UrlRepositoryMongoImpl implements UrlRepository {
     }
 
     @Override
-    public Optional<Url> update(String shortUrl, String newOriginalUrl) {
-        Query query = new Query(Criteria.where("shortUrl").is(shortUrl).and("deletedAt").is(null));
+    public Optional<Url> update(String code, String newOriginalUrl) {
+        Query query = new Query(Criteria.where("code").is(code).and("deletedAt").is(null));
 
         // Document exists, proceed with update
         Update update = new Update()
@@ -51,8 +51,8 @@ public class UrlRepositoryMongoImpl implements UrlRepository {
     }
 
     @Override
-    public Optional<Url> delete(String shortUrl) {
-        Query query = new Query(Criteria.where("shortUrl").is(shortUrl).and("deletedAt").is(null));
+    public Optional<Url> delete(String code) {
+        Query query = new Query(Criteria.where("code").is(code).and("deletedAt").is(null));
 
         // Document exists, proceed with delete
         Update update = Update.update("deletedAt", Instant.now());
@@ -61,8 +61,8 @@ public class UrlRepositoryMongoImpl implements UrlRepository {
     }
 
     @Override
-    public Url updateAccessedDetails(String shortUrl, long accessCount) {
-        Query query = new Query(Criteria.where("shortUrl").is(shortUrl).and("deletedAt").is(null));
+    public Url updateAccessedDetails(String code, long accessCount) {
+        Query query = new Query(Criteria.where("code").is(code).and("deletedAt").is(null));
 
         // Document exists, proceed with delete
         Update update = Update.update("accessCount", accessCount + 1)

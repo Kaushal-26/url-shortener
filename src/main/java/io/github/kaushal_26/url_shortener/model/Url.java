@@ -22,7 +22,7 @@ public class Url {
     // The original URL that the user wants to shorten
     private String originalUrl;
     // The shortened code that will be used to access the original URL
-    private String shortUrl;
+    private String code;
 
     // Count of how many times the shortened URL has been accessed
     private long accessCount = 0;

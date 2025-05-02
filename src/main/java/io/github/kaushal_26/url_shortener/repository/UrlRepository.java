@@ -6,14 +6,14 @@ import java.util.Optional;
 
 public interface UrlRepository {
 
-    Optional<Url> find(String shortUrl);
+    Optional<Url> find(String code);
 
     Url save(Url url);
 
-    Optional<Url> update(String shortUrl, String newOriginalUrl);
+    Optional<Url> update(String code, String newOriginalUrl);
 
-    Optional<Url> delete(String shortUrl);
+    Optional<Url> delete(String code);
 
-    Url updateAccessedDetails(String shortUrl, long accessCount);
+    Url updateAccessedDetails(String code, long accessCount);
 
 }
