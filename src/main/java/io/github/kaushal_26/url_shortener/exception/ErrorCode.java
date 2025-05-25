@@ -8,7 +8,8 @@ public enum ErrorCode {
 
     GENERIC_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred"),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not found"),
-    URL_VALIDATIONS_FAILED(HttpStatus.BAD_REQUEST, "URL validation failed");
+    URL_VALIDATIONS_FAILED(HttpStatus.BAD_REQUEST, "URL validation failed"),
+    NOT_IMPLEMENTED(HttpStatus.NOT_IMPLEMENTED, "Not implemented");
 
     private final HttpStatus statusCode;
     private final String message;
