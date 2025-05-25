@@ -3,10 +3,12 @@ package io.github.kaushal_26.url_shortener.service;
 import io.github.kaushal_26.url_shortener.config.UrlConfig;
 import io.github.kaushal_26.url_shortener.exception.UrlNotFoundException;
 import io.github.kaushal_26.url_shortener.exception.UrlValidationError;
+import io.github.kaushal_26.url_shortener.idgenerator.IdGenerator;
 import io.github.kaushal_26.url_shortener.model.Url;
 import io.github.kaushal_26.url_shortener.repository.UrlRepository;
 import io.github.kaushal_26.url_shortener.response.*;
 import io.github.kaushal_26.url_shortener.util.CommonUtil;
+import io.github.kaushal_26.url_shortener.util.EncodeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,13 @@ public class UrlService {
 
     private final UrlConfig urlConfig;
 
+    private final IdGenerator idGenerator;
+
     @Autowired
-    public UrlService(UrlRepository urlRepository, UrlConfig urlConfig) {
+    public UrlService(UrlRepository urlRepository, UrlConfig urlConfig, IdGenerator idGenerator) {
         this.urlRepository = urlRepository;
         this.urlConfig = urlConfig;
+        this.idGenerator = idGenerator;
     }
 
     private String getCode(String shortUrl) {
@@ -63,8 +68,9 @@ public class UrlService {
         // Validate the original URL
         originalUrl = CommonUtil.validateAndNormalizeUrl(originalUrl);
 
-        // TODO: Implement URL shortening logic
-        Url url = urlRepository.save(Url.builder().originalUrl(originalUrl).build());
+        Url url = urlRepository.save(
+                Url.builder().originalUrl(originalUrl).code(getNextCode()).build()
+        );
 
         String shortUrl = urlConfig.getBaseUrl() + "/" + url.getCode();
         log.info("Created short URL: {} for original URL: {}", shortUrl, originalUrl);
@@ -100,6 +106,11 @@ public class UrlService {
         Url url = urlRepository.updateAccessedDetails(code, accessCount);
         log.info("Updated access count: {} and last accessed time: {} for short URL: {}",
                 url.getAccessCount(), url.getLastAccessedAt(), urlConfig.getBaseUrl() + "/" + code);
+    }
+
+    private String getNextCode() {
+        Long id = idGenerator.nextId();
+        return EncodeUtil.encodeToBase62(id);
     }
 
 }
