@@ -13,3 +13,5 @@ server:
 url:
   shortener:
     base-url: ${URL_SHORTENER_BASE_URL}
+    id-generator:
+      type: ${URL_SHORTENER_ID_GENERATOR_TYPE}
